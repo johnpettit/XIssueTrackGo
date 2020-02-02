@@ -8,9 +8,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func homeLink(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Home Page")
-}
 
 func main() {
 	router := mux.NewRouter()
@@ -20,6 +17,10 @@ func main() {
     router.HandleFunc("/login", loginUser).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(":8080", router))
+}
+
+func homeLink(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Home Page")
 }
 
 func loginUser(w http.ResponseWriter, r *http.Request) {
