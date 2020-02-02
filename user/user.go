@@ -15,3 +15,12 @@ func GetOneUser( userID string) *User {
 
   return &new
 }
+
+func CreateUser(fName string, lName string, email string) *User {
+  new := User{}
+  new.FirstName = fName
+  new.LastName = lName
+  new.Email = email
+
+  return &new
+}
