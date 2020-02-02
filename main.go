@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"XIssueTrackGo/user"
 
 	"github.com/gorilla/mux"
 )
@@ -31,4 +32,6 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 
 func getUser(w http.ResponseWriter, r * http.Request) {
 	fmt.Fprintf(w, "Get User Data")
+	new := user.GetOneUser("123")
+	fmt.Fprintf(w, new.FirstName)
 }
