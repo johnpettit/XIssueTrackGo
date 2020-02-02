@@ -16,6 +16,8 @@ func main() {
 
     router.HandleFunc("/login", loginUser).Methods("POST")
 
+		    router.HandleFunc("/user", getUser).Methods("GET")
+
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
@@ -27,4 +29,6 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Login in this")
 }
 
-
+func getUser(w http.ResponseWriter, r * http.Request) {
+	fmt.Fprintf(w, "Get User Data")
+}
