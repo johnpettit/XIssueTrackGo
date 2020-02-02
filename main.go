@@ -8,15 +8,26 @@ import (
 	"XIssueTrackGo/user"
 	"XIssueTrackGo/issue"
 
+	"database/sql"
+    _ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
 
 func main() {
+
+	db, err := sql.Open("mysql", "root:chuck111@/gotest")
+
+	if err != nil {
+		fmt.Printf(err.Error())
+	}
+
+	defer db.Close()
+
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", homeLink).Methods("GET")
 
-  router.HandleFunc("/login", loginUser).Methods("POST")
+  	router.HandleFunc("/login", loginUser).Methods("POST")
 
 	router.HandleFunc("/user", getUser).Methods("GET")
 	router.HandleFunc("/user", createUser).Methods("POST")
