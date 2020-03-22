@@ -1,8 +1,9 @@
 package main
 
 import (
-	"XIssueTrackGo/issue"
-	"XIssueTrackGo/user"
+	"XIssueTrackGo/business"
+	"XIssueTrackGo/model"
+	"XIssueTrackGo/restapi"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -27,7 +28,7 @@ func main() {
 
 	router.HandleFunc("/", homeLink).Methods("GET")
 
-	router.HandleFunc("/login", loginUser).Methods("POST")
+	router.HandleFunc("/login", restapi.Login).Methods("POST")
 
 	router.HandleFunc("/user", getUser).Methods("GET")
 	router.HandleFunc("/user", createUser).Methods("POST")
@@ -40,15 +41,11 @@ func main() {
 }
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Home Page")
-}
-
-func loginUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Login in this")
+	log.Print("Home Page")
 }
 
 func getUser(w http.ResponseWriter, r *http.Request) {
-	newREST := user.UserREST{}
+	newREST := model.User{}
 	newREST.UserID = "123"
 	newREST.FirstName = "JoJo"
 	newREST.Email = "jojo@gmail.com"
@@ -61,24 +58,24 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 
 func createUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "New User Data")
-	new := user.CreateUser("Jo", "Bob", "jobob@gmail.com")
+	new := business.CreateUser("Jo", "Bob", "jobob@gmail.com")
 	fmt.Fprintf(w, new.Email)
 }
 
 func editUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Edit User Data")
-	new := user.CreateUser("Jo", "Bob", "jobob@gmail.com")
+	new := business.CreateUser("Jo", "Bob", "jobob@gmail.com")
 	fmt.Fprintf(w, new.Email)
 }
 
 func deleteUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Delete User Data")
-	new := user.CreateUser("Jo", "Bob", "jobob@gmail.com")
+	new := business.CreateUser("Jo", "Bob", "jobob@gmail.com")
 	fmt.Fprintf(w, new.Email)
 }
 
 func getIssue(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Get Issue Data")
-	new := issue.GetOneIssue("123")
+	new := business.GetIssue("123")
 	fmt.Fprintf(w, new.Title)
 }
