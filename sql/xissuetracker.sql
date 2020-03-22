@@ -1,8 +1,10 @@
 CREATE DATABASE IF NOT EXISTS `XIssueTracker` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
-//CREATE TABLES
+/* CREATE TABLES */
 
-//user Table
+use `XIssueTracker`;
+
+/* user Table */
 
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -14,10 +16,10 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `email_UNIQUE` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-//issue Table
+/* issue Table */
 
 CREATE TABLE IF NOT EXISTS `issue` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
