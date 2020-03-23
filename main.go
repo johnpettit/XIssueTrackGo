@@ -15,18 +15,9 @@ import (
 
 func main() {
 
-	/*
-		db, err := sql.Open("mysql", "root:chuck111@/gotest")
-
-		if err != nil {
-			fmt.Printf(err.Error())
-		}
-
-		defer db.Close()
-	*/
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", homeLink).Methods("GET")
+	router.HandleFunc("/", heartbeat).Methods("GET")
 
 	router.HandleFunc("/login", restapi.Login).Methods("POST")
 
@@ -40,7 +31,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
-func homeLink(w http.ResponseWriter, r *http.Request) {
+func heartbeat(w http.ResponseWriter, r *http.Request) {
 	log.Print("Home Page")
 }
 
