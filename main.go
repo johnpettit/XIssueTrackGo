@@ -11,6 +11,8 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
@@ -27,6 +29,9 @@ func main() {
 	router.HandleFunc("/user", deleteUser).Methods("DELETE")
 
 	router.HandleFunc("/issue", getIssue).Methods("GET")
+
+	//Prometheus metrics
+	router.Handle("/metrics", promhttp.Handler())
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
