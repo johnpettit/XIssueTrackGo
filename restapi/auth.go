@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+//Login log in a User
 func Login(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Login in this")
 }
