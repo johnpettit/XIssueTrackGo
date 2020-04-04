@@ -14,3 +14,8 @@ func UserLogin(auth model.AuthRequest) (model.Token, error) {
 	}
 	return token, errors.New("No Match")
 }
+
+//CheckToken see if token is valid
+func CheckToken(tokenhash string) (bool, int, error) {
+	return true, 1, nil
+}

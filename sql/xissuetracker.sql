@@ -23,3 +23,12 @@ CREATE TABLE IF NOT EXISTS `issue` (
   `title` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/* token Table */
+CREATE TABLE `token` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `token` varchar(240) NOT NULL,
+  `userid` int(10) unsigned NOT NULL,
+  `lasttouch` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

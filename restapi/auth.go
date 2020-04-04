@@ -26,3 +26,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	resp, _ := json.Marshal(token)
 	w.Write(resp)
 }
+
+//CheckToken checks a tokens validity
+func CheckToken(tokenhash string) bool {
+	return true
+}
