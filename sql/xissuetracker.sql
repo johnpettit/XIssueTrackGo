@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `issue` (
 /* token Table */
 CREATE TABLE `token` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `token` varchar(240) NOT NULL,
+  `tokenhash` varchar(240) NOT NULL,
   `userid` int(10) unsigned NOT NULL,
   `lasttouch` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)

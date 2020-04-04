@@ -19,7 +19,7 @@ func UserLogin(auth model.AuthRequest) (model.Token, error) {
 		//no match    bad pw?   invalid email?
 		return token, errors.New("Email/Password not found")
 	case nil:
-		token.Token = "37425b789a27ecfa5e6fc59183ac34ca"
+		token.Token = generateToken("123")
 		return token, nil
 	default:
 		//WHAT??
@@ -30,4 +30,20 @@ func UserLogin(auth model.AuthRequest) (model.Token, error) {
 //CheckToken see if token is valid
 func CheckToken(tokenhash string) (bool, int, error) {
 	return true, 1, nil
+}
+
+func generateToken(tokenhash string) string {
+	var token model.Token
+
+	del, err := database.DBSession.Prepare("DELETE FROM token WHERE tokenhash = ?")
+	if err != nil {
+		panic(err.Error())
+	}
+	_, err = del.Exec(tokenhash)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	token.Token = "37425b789a27ecfa5e6fc59183ac34ca"
+	return "37425b789a27ecfa5e6fc59183ac34ca"
 }
