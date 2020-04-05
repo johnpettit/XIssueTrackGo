@@ -11,7 +11,7 @@ import (
 //GetUser gets 1 User by ID
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	newREST := model.User{}
-	newREST.UserID = "123"
+	newREST.UserID = 123
 	newREST.FirstName = "JoJo"
 	newREST.Email = "jojo@gmail.com"
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")

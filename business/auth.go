@@ -3,8 +3,12 @@ package business
 import (
 	"XIssueTrackGo/database"
 	"XIssueTrackGo/model"
+	"crypto/md5"
 	"database/sql"
+	"encoding/hex"
 	"errors"
+	"strconv"
+	"time"
 )
 
 //UserLogin login a user
@@ -19,7 +23,7 @@ func UserLogin(auth model.AuthRequest) (model.Token, error) {
 		//no match    bad pw?   invalid email?
 		return token, errors.New("Email/Password not found")
 	case nil:
-		token.Token = generateToken("123")
+		token.Token = generateToken(user.UserID)
 		return token, nil
 	default:
 		//WHAT??
@@ -32,18 +36,29 @@ func CheckToken(tokenhash string) (bool, int, error) {
 	return true, 1, nil
 }
 
-func generateToken(tokenhash string) string {
+func generateToken(userid int) string {
 	var token model.Token
+	hasher := md5.New()
+	hasher.Write([]byte(strconv.Itoa(userid) + time.Now().Format(time.RFC3339Nano)))
+	token.Token = hex.EncodeToString(hasher.Sum(nil))
 
-	del, err := database.DBSession.Prepare("DELETE FROM token WHERE tokenhash = ?")
+	del, err := database.DBSession.Prepare("DELETE FROM token WHERE userid = ?")
 	if err != nil {
 		panic(err.Error())
 	}
-	_, err = del.Exec(tokenhash)
+	_, err = del.Exec(userid)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	token.Token = "37425b789a27ecfa5e6fc59183ac34ca"
-	return "37425b789a27ecfa5e6fc59183ac34ca"
+	ins, err2 := database.DBSession.Prepare("INSERT INTO token (tokenhash, userid) VALUES (?,?)")
+	if err2 != nil {
+		panic(err2.Error())
+	}
+	_, err2 = ins.Exec(token.Token, userid)
+	if err2 != nil {
+		panic(err2.Error())
+	}
+
+	return token.Token
 }

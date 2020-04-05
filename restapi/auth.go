@@ -22,7 +22,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Print("Logged In!")
-	log.Print(token)
 	resp, _ := json.Marshal(token)
 	w.Write(resp)
 }
