@@ -2,10 +2,22 @@ package business
 
 import "XIssueTrackGo/model"
 
-//GetUser gets 1 User based on ID
-func GetUser(userID string) *model.User {
+//GetUsers gets all Users
+/*
+func GetUsers() []model.User {
 	new := model.User{}
-	new.UserID = 123
+	new.UserID = userid
+	new.FirstName = "Jojo"
+	new.Email = "scrap@gmail.com"
+
+	return &new
+}
+*/
+
+//GetUser gets 1 User based on ID
+func GetUser(userid int) *model.User {
+	new := model.User{}
+	new.UserID = userid
 	new.FirstName = "Jojo"
 	new.Email = "scrap@gmail.com"
 

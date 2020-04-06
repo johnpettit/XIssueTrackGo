@@ -3,6 +3,8 @@ package restapi
 import (
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gorilla/context"
@@ -11,6 +13,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
+
+var apiPrefix = "/api/v1.0/"
 
 type apiServer struct {
 	router *mux.Router
@@ -24,14 +28,14 @@ func Start() {
 
 	adapter.HandleFunc("/", heartbeat).Methods("GET")
 
-	adapter.HandleFunc("/login", Login).Methods("POST")
+	adapter.HandleFunc(apiPrefix+"login", Login).Methods("POST")
 
-	adapter.HandleFunc("/user", GetUser).Methods("GET")
+	adapter.HandleFunc(apiPrefix+"user", GetUser).Methods("GET")
 	//adapter.HandleFunc("/user", createUser).Methods("POST")
 	//adapter.HandleFunc("/user", editUser).Methods("PUT")
 	//adapter.HandleFunc("/user", deleteUser).Methods("DELETE")
 
-	adapter.HandleFunc("/issue", GetIssue).Methods("GET")
+	adapter.HandleFunc(apiPrefix+"issue", GetIssue).Methods("GET")
 
 	//Prometheus metrics
 	adapter.Handle("/metrics", promhttp.Handler())
@@ -52,7 +56,25 @@ func (server *apiServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	}
 
 	//token checking here
+	requri := req.RequestURI
+	if requri != (apiPrefix + "login") {
+		s := strings.Split(req.Header.Get("Authorization"), " ")
+		if len(s) != 2 {
+			log.Print("BadAuthHeader")
+			rw.WriteHeader(http.StatusUnauthorized)
+			return
+		}
 
+		tokenhash := s[1]
+		valid, userid := CheckToken(tokenhash)
+
+		req.Header.Add("userid", strconv.Itoa(userid))
+		if !valid {
+			log.Print("Bad Token")
+			rw.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+	}
 	server.router.ServeHTTP(rw, req)
 }
 
