@@ -57,7 +57,7 @@ func (server *apiServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	//token checking here
 	requri := req.RequestURI
-	if requri != (apiPrefix + "login") {
+	if (requri != (apiPrefix + "login")) && (requri != "/") && (requri != "/metrics") {
 		s := strings.Split(req.Header.Get("Authorization"), " ")
 		if len(s) != 2 {
 			log.Print("BadAuthHeader")
