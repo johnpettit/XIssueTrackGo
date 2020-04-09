@@ -28,5 +28,5 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 //CheckToken checks a tokens validity
 func CheckToken(tokenhash string) (bool, int) {
-	return true, 1
+	return business.CheckToken(tokenhash)
 }

@@ -33,7 +33,20 @@ func UserLogin(auth model.AuthRequest) (model.Token, error) {
 
 //CheckToken see if token is valid
 func CheckToken(tokenhash string) (bool, int) {
-	return true, 1
+	var token model.TokenInternal
+
+	result := database.DBSession.QueryRow("SELECT tokenhash, userid, lasttouch FROM token WHERE tokenhash = ?", tokenhash)
+
+	switch err := result.Scan(&token.TokenHash, &token.UserID, &token.LastTouch); err {
+	case sql.ErrNoRows:
+		//no match    bad token
+		return false, -1
+	case nil:
+		return true, 1
+	default:
+		//WHAT??
+		panic(err)
+	}
 }
 
 func generateToken(userid int) string {
