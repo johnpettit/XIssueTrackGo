@@ -30,7 +30,7 @@ func Start() {
 
 	adapter.HandleFunc(apiPrefix+"login", Login).Methods("POST")
 
-	adapter.HandleFunc(apiPrefix+"user", GetUser).Methods("GET")
+	adapter.HandleFunc(apiPrefix+"user", GetUsers).Methods("GET")
 	//adapter.HandleFunc("/user", createUser).Methods("POST")
 	//adapter.HandleFunc("/user", editUser).Methods("PUT")
 	//adapter.HandleFunc("/user", deleteUser).Methods("DELETE")

@@ -8,6 +8,15 @@ import (
 	"net/http"
 )
 
+//GetUsers gets all Users
+func GetUsers(w http.ResponseWriter, r *http.Request) {
+	users := business.GetUsers()
+	resp, _ := json.Marshal(users)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	w.Write(resp)
+}
+
 //GetUser gets 1 User by ID
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	newREST := model.User{}

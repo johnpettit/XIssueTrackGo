@@ -6,7 +6,7 @@ use `XIssueTracker`;
 
 /* user Table */
 
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `firstname` varchar(45) DEFAULT NULL,
   `lastname` varchar(45) DEFAULT NULL,
@@ -18,14 +18,14 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 /* issue Table */
 
-CREATE TABLE IF NOT EXISTS `issue` (
+CREATE TABLE IF NOT EXISTS `issues` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /* token Table */
-CREATE TABLE `token` (
+CREATE TABLE `tokens` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tokenhash` varchar(240) NOT NULL,
   `userid` int(10) unsigned NOT NULL,

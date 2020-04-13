@@ -16,7 +16,7 @@ func UserLogin(auth model.AuthRequest) (model.Token, error) {
 	var user model.User
 	var token model.Token
 
-	result := database.DBSession.QueryRow("SELECT id, firstname, lastname, email FROM user WHERE email = ? and password = ?", auth.Email, auth.Password)
+	result := database.DBSession.QueryRow("SELECT id, firstname, lastname, email FROM users WHERE email = ? and password = ?", auth.Email, auth.Password)
 
 	switch err := result.Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email); err {
 	case sql.ErrNoRows:
@@ -35,7 +35,7 @@ func UserLogin(auth model.AuthRequest) (model.Token, error) {
 func CheckToken(tokenhash string) (bool, int) {
 	var token model.TokenInternal
 
-	result := database.DBSession.QueryRow("SELECT tokenhash, userid, lasttouch FROM token WHERE tokenhash = ?", tokenhash)
+	result := database.DBSession.QueryRow("SELECT tokenhash, userid, lasttouch FROM tokens WHERE tokenhash = ?", tokenhash)
 
 	switch err := result.Scan(&token.TokenHash, &token.UserID, &token.LastTouch); err {
 	case sql.ErrNoRows:
@@ -55,7 +55,7 @@ func generateToken(userid int) string {
 	hasher.Write([]byte(strconv.Itoa(userid) + time.Now().Format(time.RFC3339Nano)))
 	token.Token = hex.EncodeToString(hasher.Sum(nil))
 
-	del, err := database.DBSession.Prepare("DELETE FROM token WHERE userid = ?")
+	del, err := database.DBSession.Prepare("DELETE FROM tokens WHERE userid = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -64,7 +64,7 @@ func generateToken(userid int) string {
 		panic(err.Error())
 	}
 
-	ins, err2 := database.DBSession.Prepare("INSERT INTO token (tokenhash, userid) VALUES (?,?)")
+	ins, err2 := database.DBSession.Prepare("INSERT INTO tokens (tokenhash, userid) VALUES (?,?)")
 	if err2 != nil {
 		panic(err2.Error())
 	}
