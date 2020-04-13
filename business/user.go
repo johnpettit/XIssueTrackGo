@@ -3,6 +3,8 @@ package business
 import (
 	"XIssueTrackGo/database"
 	"XIssueTrackGo/model"
+	"database/sql"
+	"errors"
 	"log"
 )
 
@@ -32,13 +34,23 @@ func GetUsers() []model.User {
 }
 
 //GetUser gets 1 User based on ID
-func GetUser(userid int) model.User {
-	new := model.User{}
-	new.UserID = userid
-	new.FirstName = "Jojo"
-	new.Email = "scrap@gmail.com"
+func GetUser(userid int) (model.User, error) {
+	var user model.User
+	var values []interface{}
+	values = append(values, userid)
 
-	return new
+	query := "SELECT id, firstname, lastname, email FROM users WHERE id = ?"
+
+	result := database.DBSession.QueryRow(query, values...)
+
+	switch err := result.Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email); err {
+	case sql.ErrNoRows:
+		return user, errors.New("No User with that ID")
+	case nil:
+		return user, nil
+	default:
+		panic(err)
+	}
 }
 
 //CreateUser creates a new User

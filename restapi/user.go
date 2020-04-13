@@ -2,10 +2,12 @@ package restapi
 
 import (
 	"XIssueTrackGo/business"
-	"XIssueTrackGo/model"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 //GetUsers gets all Users
@@ -19,15 +21,17 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 
 //GetUser gets 1 User by ID
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	newREST := model.User{}
-	newREST.UserID = 123
-	newREST.FirstName = "JoJo"
-	newREST.Email = "jojo@gmail.com"
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(newREST); err != nil {
-		panic(err)
+	params := mux.Vars(r)
+	userid, _ := strconv.Atoi(params["userid"])
+	user, err := business.GetUser(userid)
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
+
+	resp, _ := json.Marshal(user)
+	w.Write(resp)
 }
 
 //CreateUser create 1 User
