@@ -3,7 +3,6 @@ package restapi
 import (
 	"XIssueTrackGo/business"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -35,6 +34,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 //CreateUser create 1 User
+/*
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "New User Data")
 	new := business.CreateUser("Jo", "Bob", "jobob@gmail.com")
@@ -54,3 +54,4 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	new := business.CreateUser("Jo", "Bob", "jobob@gmail.com")
 	fmt.Fprintf(w, new.Email)
 }
+*/
