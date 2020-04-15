@@ -54,11 +54,24 @@ func GetUser(userid int) (model.User, error) {
 }
 
 //CreateUser creates a new User
-func CreateUser(fName string, lName string, email string) *model.User {
-	new := model.User{}
-	new.FirstName = fName
-	new.LastName = lName
-	new.Email = email
+func CreateUser(newuser model.User) (model.User, error) {
+	ins, err := database.DBSession.Prepare("INSERT INTO users (firstname, lastname, email, password) VALUES (?,?,?,?)")
+	if err != nil {
+		log.Print(err)
+		return newuser, errors.New("Error Creating User")
+	}
 
-	return &new
+	insres, err2 := ins.Exec(newuser.FirstName, newuser.LastName, newuser.Email, newuser.Password)
+	if err2 != nil {
+		log.Print(err2)
+		return newuser, errors.New("Error Creating User")
+	}
+
+	id, err3 := insres.LastInsertId()
+	if err3 != nil {
+		log.Print(err3)
+		return newuser, errors.New("Error Creating User")
+	}
+	newuser.UserID = int(id)
+	return newuser, nil
 }
