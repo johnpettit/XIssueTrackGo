@@ -33,7 +33,7 @@ func Start() {
 	adapter.HandleFunc(apiPrefix+"user", GetUsers).Methods("GET")
 	adapter.HandleFunc(apiPrefix+"user/{userid}", GetUser).Methods("GET")
 	adapter.HandleFunc(apiPrefix+"user", CreateUser).Methods("POST")
-	//adapter.HandleFunc("/user", editUser).Methods("PUT")
+	adapter.HandleFunc(apiPrefix+"user/{userid}", EditUser).Methods("PUT")
 	//adapter.HandleFunc("/user", deleteUser).Methods("DELETE")
 
 	adapter.HandleFunc(apiPrefix+"issue", GetIssue).Methods("GET")

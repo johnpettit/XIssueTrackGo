@@ -75,3 +75,19 @@ func CreateUser(newuser model.User) (model.User, error) {
 	newuser.UserID = int(id)
 	return newuser, nil
 }
+
+//EditUser edits a User
+func EditUser(userid int, user model.User) (model.User, error) {
+	upd, err := database.DBSession.Prepare("UPDATE users SET firstname = ?, lastname = ? WHERE id = ?")
+	if err != nil {
+		log.Print(err)
+		return user, errors.New("Error Editing User")
+	}
+
+	_, err2 := upd.Exec(user.FirstName, user.LastName, userid)
+	if err2 != nil {
+		log.Print(err2)
+		return user, errors.New("Error Editing User")
+	}
+	return user, nil
+}
