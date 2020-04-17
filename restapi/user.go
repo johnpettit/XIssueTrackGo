@@ -2,7 +2,9 @@ package restapi
 
 import (
 	"XIssueTrackGo/business"
+	"XIssueTrackGo/model"
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -34,13 +36,23 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 //CreateUser create 1 User
-/*
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "New User Data")
-	new := business.CreateUser("Jo", "Bob", "jobob@gmail.com")
-	fmt.Fprintf(w, new.Email)
+	var newuser model.User
+
+	json.NewDecoder(r.Body).Decode(&newuser)
+
+	newuser, err := business.CreateUser(newuser)
+
+	if err != nil {
+		log.Print("Error Creating User")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	resp, _ := json.Marshal(newuser)
+	w.Write(resp)
 }
 
+/*
 //EditUser edits a User
 func EditUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Edit User Data")
