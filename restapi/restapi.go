@@ -40,6 +40,7 @@ func Start() {
 	//Issue endpoints
 	adapter.HandleFunc(apiPrefix+"issue", GetIssues).Methods("GET")
 	adapter.HandleFunc(apiPrefix+"issue/{issueid}", GetIssue).Methods("GET")
+	adapter.HandleFunc(apiPrefix+"issue", CreateIssue).Methods("POST")
 
 	//Prometheus metrics
 	adapter.Handle("/metrics", promhttp.Handler())

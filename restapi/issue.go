@@ -2,7 +2,9 @@ package restapi
 
 import (
 	"XIssueTrackGo/business"
+	"XIssueTrackGo/model"
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -29,5 +31,20 @@ func GetIssue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	resp, _ := json.Marshal(issue)
+	w.Write(resp)
+}
+
+//CreateIssue create 1 Issue
+func CreateIssue(w http.ResponseWriter, r *http.Request) {
+	var newissue model.Issue
+	json.NewDecoder(r.Body).Decode(&newissue)
+	newissue, err := business.CreateIssue(newissue)
+
+	if err != nil {
+		log.Print("Error Creating Issue")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	resp, _ := json.Marshal(newissue)
 	w.Write(resp)
 }

@@ -52,3 +52,26 @@ func GetIssue(issueid int) (model.Issue, error) {
 		panic(err)
 	}
 }
+
+//CreateIssue creates a new Issue
+func CreateIssue(newissue model.Issue) (model.Issue, error) {
+	ins, err := database.DBSession.Prepare("INSERT INTO issues (title) VALUES (?)")
+	if err != nil {
+		log.Print(err)
+		return newissue, errors.New("Error Creating Issue")
+	}
+
+	insres, err2 := ins.Exec(newissue.Title)
+	if err2 != nil {
+		log.Print(err2)
+		return newissue, errors.New("Error Creating Issue")
+	}
+
+	id, err3 := insres.LastInsertId()
+	if err3 != nil {
+		log.Print(err3)
+		return newissue, errors.New("Error Creating Issue")
+	}
+	newissue.IssueID = int(id)
+	return newissue, nil
+}
