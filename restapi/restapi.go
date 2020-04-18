@@ -37,7 +37,9 @@ func Start() {
 	adapter.HandleFunc(apiPrefix+"user/{userid}", EditUser).Methods("PUT")
 	adapter.HandleFunc(apiPrefix+"user/{userid}", DeleteUser).Methods("DELETE")
 
+	//Issue endpoints
 	adapter.HandleFunc(apiPrefix+"issue", GetIssues).Methods("GET")
+	adapter.HandleFunc(apiPrefix+"issue/{issueid}", GetIssue).Methods("GET")
 
 	//Prometheus metrics
 	adapter.Handle("/metrics", promhttp.Handler())
