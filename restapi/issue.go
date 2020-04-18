@@ -2,13 +2,15 @@ package restapi
 
 import (
 	"XIssueTrackGo/business"
-	"fmt"
+	"encoding/json"
 	"net/http"
 )
 
-//GetIssue get 1 issue by ID
-func GetIssue(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Get Issue Data")
-	new := business.GetIssue("123")
-	fmt.Fprintf(w, new.Title)
+//GetIssues get all issues
+func GetIssues(w http.ResponseWriter, r *http.Request) {
+	issues := business.GetIssues()
+	resp, _ := json.Marshal(issues)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	w.Write(resp)
 }
