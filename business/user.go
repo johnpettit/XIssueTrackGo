@@ -91,3 +91,19 @@ func EditUser(userid int, user model.User) (model.User, error) {
 	}
 	return user, nil
 }
+
+//DeleteUser deletes a User
+func DeleteUser(userid int) error {
+	upd, err := database.DBSession.Prepare("DELETE FROM users WHERE id = ?")
+	if err != nil {
+		log.Print(err)
+		return errors.New("Error Deleting User")
+	}
+
+	_, err2 := upd.Exec(userid)
+	if err2 != nil {
+		log.Print(err2)
+		return errors.New("Error Deleting User")
+	}
+	return nil
+}

@@ -67,11 +67,17 @@ func EditUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
-/*
 //DeleteUser deletes 1 User
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Delete User Data")
-	new := business.CreateUser("Jo", "Bob", "jobob@gmail.com")
-	fmt.Fprintf(w, new.Email)
+	var user model.User
+	params := mux.Vars(r)
+	userid, _ := strconv.Atoi(params["userid"])
+	json.NewDecoder(r.Body).Decode(&user)
+	err := business.DeleteUser(userid)
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 }
-*/
