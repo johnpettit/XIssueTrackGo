@@ -5,12 +5,9 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -24,7 +21,7 @@ type apiServer struct {
 func Start() {
 	adapter := mux.NewRouter()
 
-	recordMetrics()
+	RecordMetrics()
 
 	adapter.HandleFunc("/", heartbeat).Methods("GET")
 
@@ -86,19 +83,3 @@ func (server *apiServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 func heartbeat(w http.ResponseWriter, r *http.Request) {
 	log.Print("Home Page")
 }
-
-func recordMetrics() {
-	go func() {
-		for {
-			opsProcessed.Inc()
-			time.Sleep(2 * time.Second)
-		}
-	}()
-}
-
-var (
-	opsProcessed = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "myapp_processed_ops_total",
-		Help: "The total number of processed events",
-	})
-)
