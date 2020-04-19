@@ -48,3 +48,33 @@ func CreateIssue(w http.ResponseWriter, r *http.Request) {
 	resp, _ := json.Marshal(newissue)
 	w.Write(resp)
 }
+
+//EditIssue edits a User
+func EditIssue(w http.ResponseWriter, r *http.Request) {
+	var issue model.Issue
+	params := mux.Vars(r)
+	issueid, _ := strconv.Atoi(params["issueid"])
+	json.NewDecoder(r.Body).Decode(&issue)
+	issue, err := business.EditIssue(issueid, issue)
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	resp, _ := json.Marshal(issue)
+	w.Write(resp)
+}
+
+//DeleteIssue deletes 1 User
+func DeleteIssue(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	issueid, _ := strconv.Atoi(params["issueid"])
+	err := business.DeleteIssue(issueid)
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+}

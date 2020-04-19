@@ -69,10 +69,8 @@ func EditUser(w http.ResponseWriter, r *http.Request) {
 
 //DeleteUser deletes 1 User
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	var user model.User
 	params := mux.Vars(r)
 	userid, _ := strconv.Atoi(params["userid"])
-	json.NewDecoder(r.Body).Decode(&user)
 	err := business.DeleteUser(userid)
 
 	if err != nil {

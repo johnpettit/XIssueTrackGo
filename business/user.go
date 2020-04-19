@@ -89,6 +89,7 @@ func EditUser(userid int, user model.User) (model.User, error) {
 		log.Print(err2)
 		return user, errors.New("Error Editing User")
 	}
+	user, err = GetUser(userid)
 	return user, nil
 }
 

@@ -75,3 +75,36 @@ func CreateIssue(newissue model.Issue) (model.Issue, error) {
 	newissue.IssueID = int(id)
 	return newissue, nil
 }
+
+//EditIssue edits an Issue
+func EditIssue(issueid int, issue model.Issue) (model.Issue, error) {
+	upd, err := database.DBSession.Prepare("UPDATE issues SET title = ? WHERE id = ?")
+	if err != nil {
+		log.Print(err)
+		return issue, errors.New("Error Editing Issue")
+	}
+
+	_, err2 := upd.Exec(issue.Title, issueid)
+	if err2 != nil {
+		log.Print(err2)
+		return issue, errors.New("Error Editing Issue")
+	}
+	issue, err = GetIssue(issueid)
+	return issue, nil
+}
+
+//DeleteIssue deletes an Issue
+func DeleteIssue(issueid int) error {
+	upd, err := database.DBSession.Prepare("DELETE FROM issues WHERE id = ?")
+	if err != nil {
+		log.Print(err)
+		return errors.New("Error Deleting Issue")
+	}
+
+	_, err2 := upd.Exec(issueid)
+	if err2 != nil {
+		log.Print(err2)
+		return errors.New("Error Deleting Issue")
+	}
+	return nil
+}
