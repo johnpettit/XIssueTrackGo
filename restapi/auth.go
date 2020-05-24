@@ -23,6 +23,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Print("Logged In!")
 	resp, _ := json.Marshal(token)
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(resp)
 }
 
