@@ -21,7 +21,7 @@ func init() {
 
 	mysqlhost := os.Getenv("MYSQL_HOST")
 	if mysqlhost == "" {
-		mysqlhost = "mysql"
+		mysqlhost = "192.168.2.90"
 	}
 
 	mysqlusername := "root"
