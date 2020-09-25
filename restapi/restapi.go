@@ -8,7 +8,6 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var apiPrefix = "/api/v1.0/"
@@ -20,8 +19,6 @@ type apiServer struct {
 //Start entry point
 func Start() {
 	adapter := mux.NewRouter()
-
-	RecordMetrics()
 
 	adapter.HandleFunc("/", heartbeat).Methods("GET")
 
@@ -40,9 +37,6 @@ func Start() {
 	adapter.HandleFunc(apiPrefix+"issue", CreateIssue).Methods("POST")
 	adapter.HandleFunc(apiPrefix+"issue/{issueid}", EditIssue).Methods("PUT")
 	adapter.HandleFunc(apiPrefix+"issue/{issueid}", DeleteIssue).Methods("DELETE")
-
-	//Prometheus metrics
-	adapter.Handle("/metrics", promhttp.Handler())
 
 	//apiSrv := &http.Server{Addr: "0.0.0.0:8088", Handler: context.ClearHandler(&apiServer{adapter})}
 	//log.Fatal(apiSrv.ListenAndServe())
