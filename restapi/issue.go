@@ -1,8 +1,8 @@
 package restapi
 
 import (
-	"XIssueTrackGo/business"
-	"XIssueTrackGo/model"
+	"github.com/johnpettit/XIssueTrackGo/business"
+	"github.com/johnpettit/XIssueTrackGo/model"
 	"encoding/json"
 	"log"
 	"net/http"

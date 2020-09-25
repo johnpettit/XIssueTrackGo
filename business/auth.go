@@ -1,8 +1,8 @@
 package business
 
 import (
-	"XIssueTrackGo/database"
-	"XIssueTrackGo/model"
+	"github.com/johnpettit/XIssueTrackGo/database"
+	"github.com/johnpettit/XIssueTrackGo/model"
 	"crypto/md5"
 	"database/sql"
 	"encoding/hex"
