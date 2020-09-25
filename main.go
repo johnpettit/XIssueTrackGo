@@ -1,7 +1,7 @@
 package main
 
 import (
-	"XIssueTrackGo/restapi"
+	"github.com/johnpettit/XIssueTrackGo/restapi"
 	"log"
 )
 
