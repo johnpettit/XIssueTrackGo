@@ -22,7 +22,8 @@ services:
       - MYSQL_HOST=mysql
       - MYSQL_USER=xissuetrackgo
       - MYSQL_PASSWORD=chuck111
-    entrypoint: './xissuetracker'
+    #entrypoint: ['sh','-c','sleep 2073600']
+    entrypoint: './xissuetrackgo'
     depends_on:
       - mysql
 
