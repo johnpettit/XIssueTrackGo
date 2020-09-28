@@ -1,14 +1,15 @@
 package business
 
 import (
-	"github.com/johnpettit/XIssueTrackGo/database"
-	"github.com/johnpettit/XIssueTrackGo/model"
 	"crypto/md5"
 	"database/sql"
 	"encoding/hex"
 	"errors"
 	"strconv"
 	"time"
+
+	"github.com/johnpettit/XIssueTrackGo/database"
+	"github.com/johnpettit/XIssueTrackGo/model"
 )
 
 //UserLogin login a user
@@ -16,7 +17,11 @@ func UserLogin(auth model.AuthRequest) (model.Token, error) {
 	var user model.User
 	var token model.Token
 
-	result := database.DBSession.QueryRow("SELECT id, firstname, lastname, email FROM users WHERE email = ? and password = ?", auth.Email, auth.Password)
+	//md5 the Password
+	hash := md5.Sum([]byte(auth.Password))
+	md5Password := hex.EncodeToString(hash[:])
+
+	result := database.DBSession.QueryRow("SELECT id, firstname, lastname, email FROM users WHERE email = ? and password = ?", auth.Email, md5Password)
 
 	switch err := result.Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email); err {
 	case sql.ErrNoRows:

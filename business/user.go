@@ -1,11 +1,14 @@
 package business
 
 import (
-	"github.com/johnpettit/XIssueTrackGo/database"
-	"github.com/johnpettit/XIssueTrackGo/model"
+	"crypto/md5"
 	"database/sql"
+	"encoding/hex"
 	"errors"
 	"log"
+
+	"github.com/johnpettit/XIssueTrackGo/database"
+	"github.com/johnpettit/XIssueTrackGo/model"
 )
 
 //GetUsers gets all Users
@@ -61,7 +64,11 @@ func CreateUser(newuser model.User) (model.User, error) {
 		return newuser, errors.New("Error Creating User")
 	}
 
-	insres, err2 := ins.Exec(newuser.FirstName, newuser.LastName, newuser.Email, newuser.Password)
+	//md5 the Password
+	hash := md5.Sum([]byte(newuser.Password))
+	md5Password := hex.EncodeToString(hash[:])
+
+	insres, err2 := ins.Exec(newuser.FirstName, newuser.LastName, newuser.Email, md5Password)
 	if err2 != nil {
 		log.Print(err2)
 		return newuser, errors.New("Error Creating User")
@@ -73,6 +80,7 @@ func CreateUser(newuser model.User) (model.User, error) {
 		return newuser, errors.New("Error Creating User")
 	}
 	newuser.UserID = int(id)
+	newuser.Password = md5Password
 	return newuser, nil
 }
 
