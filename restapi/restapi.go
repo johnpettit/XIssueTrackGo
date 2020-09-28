@@ -21,6 +21,7 @@ func Start() {
 	adapter := mux.NewRouter()
 
 	adapter.HandleFunc("/", heartbeat).Methods("GET")
+	adapter.HandleFunc(apiPrefix+"/", heartbeat).Methods("GET")
 
 	adapter.HandleFunc(apiPrefix+"login", Login).Methods("POST")
 
