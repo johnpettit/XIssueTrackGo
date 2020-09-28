@@ -1,16 +1,17 @@
 package restapi
 
 import (
-	"github.com/johnpettit/XIssueTrackGo/business"
-	"github.com/johnpettit/XIssueTrackGo/model"
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/johnpettit/XIssueTrackGo/business"
+	"github.com/johnpettit/XIssueTrackGo/model"
 )
 
 //Login log in a User
 func Login(w http.ResponseWriter, r *http.Request) {
-	log.Print("Login in this")
+	log.Print("Login called")
 
 	var authreq model.AuthRequest
 	json.NewDecoder(r.Body).Decode(&authreq)
@@ -29,5 +30,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 //CheckToken checks a tokens validity
 func CheckToken(tokenhash string) (bool, int) {
+	log.Print("CheckToken called")
 	return business.CheckToken(tokenhash)
 }

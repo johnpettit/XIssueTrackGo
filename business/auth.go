@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"errors"
+	"log"
 	"strconv"
 	"time"
 
@@ -21,6 +22,8 @@ func UserLogin(auth model.AuthRequest) (model.Token, error) {
 	hash := md5.Sum([]byte(auth.Password))
 	md5Password := hex.EncodeToString(hash[:])
 
+	log.Print(auth.Email)
+	log.Print(md5Password)
 	result := database.DBSession.QueryRow("SELECT id, firstname, lastname, email FROM users WHERE email = ? and password = ?", auth.Email, md5Password)
 
 	switch err := result.Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email); err {
