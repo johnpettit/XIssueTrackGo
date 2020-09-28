@@ -32,3 +32,6 @@ CREATE TABLE `tokens` (
   `lasttouch` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/* Create initial User */
+INSERT INTO `users` (firstname, lastname, email, password) VALUES ("admin", "admin", "admin" , "21232f297a57a5a743894a0e4a801fc3");
