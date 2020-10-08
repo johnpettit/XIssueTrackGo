@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gorilla/handlers"
+	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 )
 
@@ -39,11 +39,11 @@ func Start() {
 	adapter.HandleFunc(apiPrefix+"issue/{issueid}", EditIssue).Methods("PUT")
 	adapter.HandleFunc(apiPrefix+"issue/{issueid}", DeleteIssue).Methods("DELETE")
 
-	//apiSrv := &http.Server{Addr: "0.0.0.0:8088", Handler: context.ClearHandler(&apiServer{adapter})}
-	//log.Fatal(apiSrv.ListenAndServe())
-	allowed := handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))
+	apiSrv := &http.Server{Addr: "0.0.0.0:8088", Handler: context.ClearHandler(&apiServer{adapter})}
+	log.Fatal(apiSrv.ListenAndServe())
+	//allowed := handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))
 	//log.Fatal(http.ListenAndServe(":8088", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(adapter)))
-	log.Fatal(http.ListenAndServe(":8088", allowed(adapter)))
+	//log.Fatal(http.ListenAndServe(":8088", allowed(adapter)))
 }
 
 func (server *apiServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
@@ -60,7 +60,7 @@ func (server *apiServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	//token checking here
 	requri := req.RequestURI
-	if (requri != (apiPrefix + "login")) && (requri != "/") && (requri != "/metrics") {
+	if (requri != (apiPrefix + "login")) && (requri != (apiPrefix + "/")) {
 		s := strings.Split(req.Header.Get("Authorization"), " ")
 		if len(s) != 2 {
 			log.Print("BadAuthHeader")

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"errors"
+	"log"
 	"strconv"
 	"time"
 
@@ -38,6 +39,7 @@ func UserLogin(auth model.AuthRequest) (model.Token, error) {
 
 //CheckToken see if token is valid
 func CheckToken(tokenhash string) (bool, int) {
+	log.Print("CheckToken called")
 	var token model.TokenInternal
 
 	result := database.DBSession.QueryRow("SELECT tokenhash, userid, lasttouch FROM tokens WHERE tokenhash = ?", tokenhash)
@@ -47,7 +49,10 @@ func CheckToken(tokenhash string) (bool, int) {
 		//no match    bad token
 		return false, -1
 	case nil:
-		return true, 1
+		if updateToken(tokenhash) {
+			return true, 1
+		}
+		return false, -1
 	default:
 		//WHAT??
 		panic(err)
@@ -55,6 +60,7 @@ func CheckToken(tokenhash string) (bool, int) {
 }
 
 func generateToken(userid int) string {
+	log.Print("generateToken called")
 	var token model.Token
 	hasher := md5.New()
 	hasher.Write([]byte(strconv.Itoa(userid) + time.Now().Format(time.RFC3339Nano)))
@@ -79,4 +85,18 @@ func generateToken(userid int) string {
 	}
 
 	return token.Token
+}
+
+func updateToken(tokenhash string) bool {
+	log.Print("updateToken called")
+	up, err := database.DBSession.Prepare("UPDATE tokens SET lasttouch = NOW()  WHERE tokenhash = ?")
+	if err != nil {
+		panic(err.Error())
+	}
+	_, err = up.Exec(tokenhash)
+	if err != nil {
+		log.Print(err.Error())
+		return false
+	}
+	return true
 }

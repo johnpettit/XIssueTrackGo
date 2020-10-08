@@ -2,13 +2,13 @@
 
 FROM golang:1.15 as compiler
 RUN mkdir /xissuetrackgo
-WORKDIR /xiisuetrackgo
+WORKDIR /xissuetrackgo
 COPY go.mod .
 RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -mod=readonly -ldflags '-s -w' -o /target main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -mod=readonly -ldflags '-s -w' -o /target .
 
 # Target
 
@@ -19,4 +19,3 @@ ENTRYPOINT ["/xissuetrackgo"]
 EXPOSE 8088
 
 COPY --from=compiler /target /xissuetrackgo
-
