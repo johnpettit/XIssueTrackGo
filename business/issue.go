@@ -87,13 +87,15 @@ func CreateIssue(newissue model.Issue, createdbyuserid int) (model.Issue, error)
 
 //EditIssue edits an Issue
 func EditIssue(issueid int, issue model.Issue) (model.Issue, error) {
-	upd, err := database.DBSession.Prepare("UPDATE issues SET title = ? WHERE id = ?")
+	var updatedate = time.Now()
+	updatedate.Format(time.RFC3339)
+	upd, err := database.DBSession.Prepare("UPDATE issues SET title = ? , updatedate = ? WHERE id = ?")
 	if err != nil {
 		log.Print(err)
 		return issue, errors.New("Error Editing Issue")
 	}
 
-	_, err2 := upd.Exec(issue.Title, issueid)
+	_, err2 := upd.Exec(issue.Title, updatedate, issueid)
 	if err2 != nil {
 		log.Print(err2)
 		return issue, errors.New("Error Editing Issue")
