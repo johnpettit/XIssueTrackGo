@@ -56,18 +56,18 @@ func GetIssue(issueid int) (model.Issue, error) {
 }
 
 //CreateIssue creates a new Issue
-func CreateIssue(newissue model.Issue) (model.Issue, error) {
+func CreateIssue(newissue model.Issue, createdbyuserid int) (model.Issue, error) {
 	var createdate = time.Now()
 	createdate.Format(time.RFC3339)
 	var updatedate = time.Now()
 	updatedate.Format(time.RFC3339)
-	ins, err := database.DBSession.Prepare("INSERT INTO issues (title, createdate, updatedate, createdbyuserid) VALUES (?,?,?,1)")
+	ins, err := database.DBSession.Prepare("INSERT INTO issues (title, createdate, updatedate, createdbyuserid) VALUES (?,?,?,?)")
 	if err != nil {
 		log.Print(err)
 		return newissue, errors.New("Error Creating Issue")
 	}
 
-	insres, err2 := ins.Exec(newissue.Title, createdate, updatedate)
+	insres, err2 := ins.Exec(newissue.Title, createdate, updatedate, createdbyuserid)
 	if err2 != nil {
 		log.Print(err2)
 		return newissue, errors.New("Error Creating Issue")
@@ -81,7 +81,7 @@ func CreateIssue(newissue model.Issue) (model.Issue, error) {
 	newissue.IssueID = int(id)
 	newissue.CreateDate = createdate
 	newissue.UpdateDate = updatedate
-	newissue.CreatedByUserID = 1
+	newissue.CreatedByUserID = createdbyuserid
 	return newissue, nil
 }
 

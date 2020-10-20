@@ -42,7 +42,8 @@ func CreateIssue(w http.ResponseWriter, r *http.Request) {
 	log.Print("CreateIssue called")
 	var newissue model.Issue
 	json.NewDecoder(r.Body).Decode(&newissue)
-	newissue, err := business.CreateIssue(newissue)
+	log.Print("LoggedInUserID in create:" + strconv.Itoa(LoggedInUserID))
+	newissue, err := business.CreateIssue(newissue, LoggedInUserID)
 
 	if err != nil {
 		log.Print("Error Creating Issue")

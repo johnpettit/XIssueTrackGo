@@ -50,7 +50,7 @@ func CheckToken(tokenhash string) (bool, int) {
 		return false, -1
 	case nil:
 		if updateToken(tokenhash) {
-			return true, 1
+			return true, token.UserID
 		}
 		return false, -1
 	default:

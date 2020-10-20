@@ -12,6 +12,9 @@ import (
 
 var apiPrefix = "/api/v1.0/"
 
+//LoggedInUserID hold id of logged in user    ??context??
+var LoggedInUserID int
+
 type apiServer struct {
 	router *mux.Router
 }
@@ -69,9 +72,12 @@ func (server *apiServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		}
 
 		tokenhash := s[1]
+		log.Print(tokenhash)
 		valid, userid := CheckToken(tokenhash)
 
 		req.Header.Add("userid", strconv.Itoa(userid))
+		LoggedInUserID = userid
+		log.Print("LoggedInUserID after token:" + strconv.Itoa(LoggedInUserID))
 		if !valid {
 			log.Print("Bad Token")
 			rw.WriteHeader(http.StatusUnauthorized)
