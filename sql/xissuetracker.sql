@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `issues` (
   `title` varchar(45) DEFAULT NULL,
   `createdate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdbyuserid` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

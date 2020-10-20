@@ -8,5 +8,5 @@ type Issue struct {
 	Title           string    `json:"title"`
 	CreateDate      time.Time `json:"createdate"`
 	UpdateDate      time.Time `json:"updatedate"`
-	CreatedByUserID string    `json:"createdby"`
+	CreatedByUserID int       `json:"createdbyuserid"`
 }

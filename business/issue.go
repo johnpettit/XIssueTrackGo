@@ -1,11 +1,13 @@
 package business
 
 import (
-	"github.com/johnpettit/XIssueTrackGo/database"
-	"github.com/johnpettit/XIssueTrackGo/model"
 	"database/sql"
 	"errors"
 	"log"
+	"time"
+
+	"github.com/johnpettit/XIssueTrackGo/database"
+	"github.com/johnpettit/XIssueTrackGo/model"
 )
 
 //GetIssues gets all Users
@@ -13,7 +15,7 @@ func GetIssues() []model.Issue {
 	var issue model.Issue
 	var issues []model.Issue
 
-	query := "SELECT id, title FROM issues"
+	query := "SELECT id, title, createdate, updatedate, createdbyuserid FROM issues"
 
 	results, err := database.DBSession.Query(query)
 
@@ -23,7 +25,7 @@ func GetIssues() []model.Issue {
 	}
 
 	for results.Next() {
-		err = results.Scan(&issue.IssueID, &issue.Title)
+		err = results.Scan(&issue.IssueID, &issue.Title, &issue.CreateDate, &issue.UpdateDate, &issue.CreatedByUserID)
 		if err != nil {
 			log.Print(err)
 			return issues
@@ -39,11 +41,11 @@ func GetIssue(issueid int) (model.Issue, error) {
 	var values []interface{}
 	values = append(values, issueid)
 
-	query := "SELECT id, title FROM issues WHERE id = ?"
+	query := "SELECT id, title, createdate, updatedate, createdbyuserid FROM issues WHERE id = ?"
 
 	result := database.DBSession.QueryRow(query, values...)
 
-	switch err := result.Scan(&issue.IssueID, &issue.Title); err {
+	switch err := result.Scan(&issue.IssueID, &issue.Title, &issue.CreateDate, &issue.UpdateDate, &issue.CreatedByUserID); err {
 	case sql.ErrNoRows:
 		return issue, errors.New("No Issue with that ID")
 	case nil:
@@ -55,13 +57,17 @@ func GetIssue(issueid int) (model.Issue, error) {
 
 //CreateIssue creates a new Issue
 func CreateIssue(newissue model.Issue) (model.Issue, error) {
-	ins, err := database.DBSession.Prepare("INSERT INTO issues (title) VALUES (?)")
+	var createdate = time.Now()
+	createdate.Format(time.RFC3339)
+	var updatedate = time.Now()
+	updatedate.Format(time.RFC3339)
+	ins, err := database.DBSession.Prepare("INSERT INTO issues (title, createdate, updatedate, createdbyuserid) VALUES (?,?,?,1)")
 	if err != nil {
 		log.Print(err)
 		return newissue, errors.New("Error Creating Issue")
 	}
 
-	insres, err2 := ins.Exec(newissue.Title)
+	insres, err2 := ins.Exec(newissue.Title, createdate, updatedate)
 	if err2 != nil {
 		log.Print(err2)
 		return newissue, errors.New("Error Creating Issue")
@@ -73,6 +79,9 @@ func CreateIssue(newissue model.Issue) (model.Issue, error) {
 		return newissue, errors.New("Error Creating Issue")
 	}
 	newissue.IssueID = int(id)
+	newissue.CreateDate = createdate
+	newissue.UpdateDate = updatedate
+	newissue.CreatedByUserID = 1
 	return newissue, nil
 }
 
