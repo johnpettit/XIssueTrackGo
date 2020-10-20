@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `lastname` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,
+  `createdate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
