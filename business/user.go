@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"log"
+	"time"
 
 	"github.com/johnpettit/XIssueTrackGo/database"
 	"github.com/johnpettit/XIssueTrackGo/model"
@@ -16,7 +17,7 @@ func GetUsers() []model.User {
 	var user model.User
 	var users []model.User
 
-	query := "SELECT id, firstname, lastname, email FROM users"
+	query := "SELECT id, firstname, lastname, email, createdate, updatedate FROM users"
 
 	results, err := database.DBSession.Query(query)
 
@@ -26,7 +27,7 @@ func GetUsers() []model.User {
 	}
 
 	for results.Next() {
-		err = results.Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email)
+		err = results.Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email, &user.CreateDate, &user.UpdateDate)
 		if err != nil {
 			log.Print(err)
 			return users
@@ -42,11 +43,11 @@ func GetUser(userid int) (model.User, error) {
 	var values []interface{}
 	values = append(values, userid)
 
-	query := "SELECT id, firstname, lastname, email FROM users WHERE id = ?"
+	query := "SELECT id, firstname, lastname, email, createdate, updatedate FROM users WHERE id = ?"
 
 	result := database.DBSession.QueryRow(query, values...)
 
-	switch err := result.Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email); err {
+	switch err := result.Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email, &user.CreateDate, &user.UpdateDate); err {
 	case sql.ErrNoRows:
 		return user, errors.New("No User with that ID")
 	case nil:
@@ -58,7 +59,11 @@ func GetUser(userid int) (model.User, error) {
 
 //CreateUser creates a new User
 func CreateUser(newuser model.User) (model.User, error) {
-	ins, err := database.DBSession.Prepare("INSERT INTO users (firstname, lastname, email, password) VALUES (?,?,?,?)")
+	var createdate = time.Now()
+	createdate.Format(time.RFC3339)
+	var updatedate = time.Now()
+	updatedate.Format(time.RFC3339)
+	ins, err := database.DBSession.Prepare("INSERT INTO users (firstname, lastname, email, password, createdate, updatedate) VALUES (?,?,?,?,?,?)")
 	if err != nil {
 		log.Print(err)
 		return newuser, errors.New("Error Creating User")
@@ -68,7 +73,7 @@ func CreateUser(newuser model.User) (model.User, error) {
 	hash := md5.Sum([]byte(newuser.Password))
 	md5Password := hex.EncodeToString(hash[:])
 
-	insres, err2 := ins.Exec(newuser.FirstName, newuser.LastName, newuser.Email, md5Password)
+	insres, err2 := ins.Exec(newuser.FirstName, newuser.LastName, newuser.Email, md5Password, createdate, updatedate)
 	if err2 != nil {
 		log.Print(err2)
 		return newuser, errors.New("Error Creating User")
@@ -81,18 +86,22 @@ func CreateUser(newuser model.User) (model.User, error) {
 	}
 	newuser.UserID = int(id)
 	newuser.Password = md5Password
+	newuser.CreateDate = createdate
+	newuser.UpdateDate = updatedate
 	return newuser, nil
 }
 
 //EditUser edits a User
 func EditUser(userid int, user model.User) (model.User, error) {
-	upd, err := database.DBSession.Prepare("UPDATE users SET firstname = ?, lastname = ? WHERE id = ?")
+	var updatedate = time.Now()
+	updatedate.Format(time.RFC3339)
+	upd, err := database.DBSession.Prepare("UPDATE users SET firstname = ?, lastname = ?, updatedate = ? WHERE id = ?")
 	if err != nil {
 		log.Print(err)
 		return user, errors.New("Error Editing User")
 	}
 
-	_, err2 := upd.Exec(user.FirstName, user.LastName, userid)
+	_, err2 := upd.Exec(user.FirstName, user.LastName, updatedate, userid)
 	if err2 != nil {
 		log.Print(err2)
 		return user, errors.New("Error Editing User")
