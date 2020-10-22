@@ -1,0 +1,467 @@
+{
+	"info": {
+		"_postman_id": "3671c487-6e7d-4237-8537-644f127b7439",
+		"name": "XIssueTracker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\":\"john.pettit@cox.net\",\n\t\"password\":\"chuck111\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}:8088/api/v1.0/login",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8088",
+					"path": [
+						"api",
+						"v1.0",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Home",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"ID\":\"4\",\"Mac\":\"iubfweiubwegubwgujbwgeubujb/ouibebhw\"}"
+				},
+				"url": {
+					"raw": "{{server}}:8088/api/v1.0/",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8088",
+					"path": [
+						"api",
+						"v1.0",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1163fdaf0a3affca33919363d9c67178",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8080/api/v1.0/user/1",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1.0",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "ef40461c49c7848a85e322935aaa1b59",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8080/api/v1.0/user",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1.0",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6fba42243841d024c5edb56b91a94cd2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\": \"John\",\r\n    \"lastname\": \"Pettit\",\r\n    \"email\": \"john.pettit1@cox.net\",\r\n    \"password\": \"chuck111\"\r\n}"
+				},
+				"url": {
+					"raw": "{{server}}:8080/api/v1.0/user",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1.0",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT User",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "192.168.2.90:8080/user",
+					"host": [
+						"192",
+						"168",
+						"2",
+						"90"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "192.168.2.90:8080/user",
+					"host": [
+						"192",
+						"168",
+						"2",
+						"90"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Delete User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eaa3f43f3511fe3168039dad03ee8916",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\": \"John\",\r\n    \"lastname\": \"Skippy\"\r\n}"
+				},
+				"url": {
+					"raw": "{{server}}:8080/api/v1.0/user/3",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1.0",
+						"user",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Issue",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "8945baba1d8dd4ac52d1b76918cb9148",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8088/api/v1.0/issue",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8088",
+					"path": [
+						"api",
+						"v1.0",
+						"issue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Issues",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "7589c00c43b595a2f9cdd4c46219f032",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8088/api/v1.0/issue",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8088",
+					"path": [
+						"api",
+						"v1.0",
+						"issue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Issue",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eaa3f43f3511fe3168039dad03ee8916",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8080/api/v1.0/issue/1",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1.0",
+						"issue",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Create Issue",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "8945baba1d8dd4ac52d1b76918cb9148",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"Title\": \"test 1\"\r\n    }"
+				},
+				"url": {
+					"raw": "{{server}}:8088/api/v1.0/issue",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8088",
+					"path": [
+						"api",
+						"v1.0",
+						"issue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Get metrics",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eaa3f43f3511fe3168039dad03ee8916",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"Title\": \"test 1\"\r\n    }"
+				},
+				"url": {
+					"raw": "{{server}}:8080/metrics",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8080",
+					"path": [
+						"metrics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Edit Issue",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "3a65b1efc344697422371ac9c5fe62a4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"Title\": \"test 299\"\r\n    }"
+				},
+				"url": {
+					"raw": "{{server}}:8080/api/v1.0/issue/3",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1.0",
+						"issue",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Issue",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "47498e21f0a490b44442f118bdac9d33",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8088/api/v1.0/issue/9",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8088",
+					"path": [
+						"api",
+						"v1.0",
+						"issue",
+						"9"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
