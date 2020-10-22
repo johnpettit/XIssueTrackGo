@@ -111,6 +111,7 @@ func EditUser(userid int, user model.User) (model.User, error) {
 }
 
 //DeleteUser deletes a User
+//TODO User to Issue mapping in DB     How to handle?   Active/Inactive flag probably
 func DeleteUser(userid int) error {
 	upd, err := database.DBSession.Prepare("DELETE FROM users WHERE id = ?")
 	if err != nil {

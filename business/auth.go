@@ -37,7 +37,8 @@ func UserLogin(auth model.AuthRequest) (model.Token, error) {
 	}
 }
 
-//CheckToken see if token is valid
+//CheckToken see if token is valid upates its lasttouched
+//TODO add in token expiration
 func CheckToken(tokenhash string) (bool, int) {
 	log.Print("CheckToken called")
 	var token model.TokenInternal
@@ -59,6 +60,7 @@ func CheckToken(tokenhash string) (bool, int) {
 	}
 }
 
+//generates a token and inserts into DB
 func generateToken(userid int) string {
 	log.Print("generateToken called")
 	var token model.Token
@@ -87,6 +89,7 @@ func generateToken(userid int) string {
 	return token.Token
 }
 
+//updates tokens lasttouched    Should also kill expired tokens??
 func updateToken(tokenhash string) bool {
 	log.Print("updateToken called")
 	up, err := database.DBSession.Prepare("UPDATE tokens SET lasttouch = NOW()  WHERE tokenhash = ?")

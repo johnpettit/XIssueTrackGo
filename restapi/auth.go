@@ -30,6 +30,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 //CheckToken checks a tokens validity
 func CheckToken(tokenhash string) (bool, int) {
-	log.Print("CheckToken called")
+	log.Print("REST - CheckToken called")
 	return business.CheckToken(tokenhash)
 }

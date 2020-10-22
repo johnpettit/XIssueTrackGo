@@ -10,7 +10,7 @@ import (
 	"github.com/johnpettit/XIssueTrackGo/model"
 )
 
-//GetIssues gets all Users
+//GetIssues gets all Issues
 func GetIssues() []model.Issue {
 	var issue model.Issue
 	var issues []model.Issue
@@ -55,7 +55,7 @@ func GetIssue(issueid int) (model.Issue, error) {
 	}
 }
 
-//CreateIssue creates a new Issue
+//CreateIssue creates a new Issue with defaults
 func CreateIssue(newissue model.Issue, createdbyuserid int) (model.Issue, error) {
 	var createdate = time.Now()
 	createdate.Format(time.RFC3339)
