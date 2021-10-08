@@ -54,7 +54,7 @@ func CreateIssue(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
-//EditIssue edits a User
+//EditIssue edits a Issue
 func EditIssue(w http.ResponseWriter, r *http.Request) {
 	log.Print("EditIssue called")
 	var issue model.Issue
@@ -72,7 +72,7 @@ func EditIssue(w http.ResponseWriter, r *http.Request) {
 	w.Write(resp)
 }
 
-//DeleteIssue deletes 1 User
+//DeleteIssue deletes 1 Issue
 func DeleteIssue(w http.ResponseWriter, r *http.Request) {
 	log.Print("DeleteIssue called")
 	params := mux.Vars(r)
